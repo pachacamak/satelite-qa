@@ -165,6 +165,8 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::get('/all/obraporimpuesto', [ObraporImpuestoController::class, 'allObraporImpuesto']);
 
   Route::post('/edit/obraporimpuesto', [ObraporImpuestoController::class, 'editObraporImpuesto']);
+  
+  Route::post('/edit/obraporimpuestoestado', [ObraporImpuestoController::class, 'editObraporImpuestoEstado']);
 
   Route::post('/delete/obraporimpuesto', [ObraporImpuestoController::class, 'deleteObraporImpuesto']);
 
@@ -321,6 +323,8 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::get('/all/etapaejecucion', [ActividadesEjecucionController::class, 'allActividadesEjecucion']);
 
   Route::get('/all/etapaejecucionporetapa', [ActividadesEjecucionController::class, 'allActividadesEjecucionporEtpa']);
+
+  Route::get('/all/actividadesejecucionnombre', [ActividadesEjecucionController::class, 'allActividadesEjecucionNombre']);
 
   Route::post('/edit/etapaejecucion', [ActividadesEjecucionController::class, 'editActividadesEjecucion']);
 
