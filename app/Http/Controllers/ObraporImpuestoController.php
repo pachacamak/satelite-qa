@@ -288,10 +288,6 @@ public function addObraporImpuestov3(Request $request)
             'costo_proyecto' => $request->costo_proyecto,
             'fecha_conclusion' => $request->fecha_conclusion,
             'fecha_reembolso' => $request->fecha_reembolso,
-           // 'responsable' => json_encode($request->responsable), // Guardar como JSON
-           // 'unidades_gestion' => json_encode($request->unidades_gestion),
-           // 'centros_operacion' => json_encode($request->centros_operacion),
-
             'responsable' => $request->responsable, // Guardar como JSON
             'unidades_gestion' => $request->unidades_gestion,
             'centros_operacion' => $request->centros_operacion,

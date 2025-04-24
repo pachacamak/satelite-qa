@@ -186,7 +186,7 @@ class ActividadesEjecucionController extends Controller
                 'comentarios' => $request->comentarios,
                 'atencion_estado_id' => $request->atencion_estado_id,
                 'tipo_estado_ejecucion_id' => $request->tipo_estado_ejecucion_id,
-                'responsables' => json_encode($request->responsables), // Guardar como JSON
+                'responsables' => $request->responsables, // Guardar como JSON
             ]);
 
             return response()->json([
