@@ -255,7 +255,7 @@ class AtencionEstadoController extends Controller
 
            try{
 
-            $itemsEstadoAtencion = AtencionEstados::where('id_empresa', $request->id_empresa)->with(['accionestado:id,name', 'acciontipoatencion:id,name'])->get();
+            $itemsEstadoAtencion = AtencionEstados::where('id_empresa', $request->id_empresa)->where('estado',1)->with(['accionestado:id,name', 'acciontipoatencion:id,name'])->get();
 
             return response()->json(
                 [
@@ -307,24 +307,30 @@ class AtencionEstadoController extends Controller
             ], 403);
         }
 
-        try {
-            $estado = AtencionEstados::findOrFail($request->id);
-            $estado->delete();
 
-            return response()->json([
-                'message' => 'Estado eliminado con éxito'
-            ], 200);
 
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => 'El estado con el ID proporcionado no existe'
-            ], 404);
+            try{
 
-        } catch (\Exception $exceptiondelete) {
-            return response()->json([
-                'error' => 'Error al eliminar el estado',
-                'message' => $exceptiondelete->getMessage()
-            ], 500);
-        }
+                $EstadoAtencion_data = AtencionEstados::find($request->id);
+
+
+               $updateEstadoAtencion = $EstadoAtencion_data->update([
+                     'estado'=> 0,
+                ]);
+
+                return response()->json(
+                    [
+                        'message'=> 'Estado delete Succeccfully',
+
+                    ],200 );
+
+               }catch(\Exception $exception){
+
+                return response()->json([
+                    'error'=> $exception->getMessage(),
+                    ],403);
+
+               }
+
     }
 }

@@ -164,11 +164,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::get('/all/obraporimpuesto', [ObraporImpuestoController::class, 'allObraporImpuesto']);
 
+  Route::get('/all/obraporimpuestoco', [ObraporImpuestoController::class, 'allObraporImpuestoCo']);
+
   Route::post('/edit/obraporimpuesto', [ObraporImpuestoController::class, 'editObraporImpuesto']);
-  
-  Route::post('/edit/obraporimpuestoestado', [ObraporImpuestoController::class, 'editObraporImpuestoEstado']);
 
   Route::post('/delete/obraporimpuesto', [ObraporImpuestoController::class, 'deleteObraporImpuesto']);
+
+  Route::post('/edit/obraporimpuestoestado', [ObraporImpuestoController::class, 'editObraporImpuestoEstado']);
 
 
 
@@ -324,14 +326,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::get('/all/etapaejecucionporetapa', [ActividadesEjecucionController::class, 'allActividadesEjecucionporEtpa']);
 
-  Route::get('/all/actividadesejecucionnombre', [ActividadesEjecucionController::class, 'allActividadesEjecucionNombre']);
-
   Route::post('/edit/etapaejecucion', [ActividadesEjecucionController::class, 'editActividadesEjecucion']);
 
   Route::post('/edit/estadoetapaejecucion', [ActividadesEjecucionController::class, 'editActividadesEjecucionTipo']);
 
   Route::post('/delete/etapaejecucion', [ActividadesEjecucionController::class, 'deleteActividadesEjecucion']);
 
+  Route::get('/all/actividadesejecucionnombre', [ActividadesEjecucionController::class, 'allActividadesEjecucionNombre']);
 
 
 

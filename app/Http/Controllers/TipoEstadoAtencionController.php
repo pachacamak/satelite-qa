@@ -126,7 +126,7 @@ class TipoEstadoAtencionController extends Controller
 
            try{
 
-            $itemsTipoEstadoAtencion = TipoEstadoAtencion::where('id_empresa', $request->id_empresa)->get();
+            $itemsTipoEstadoAtencion = TipoEstadoAtencion::where('id_empresa', $request->id_empresa)->where('estado', 1)->get();
 
             return response()->json(
                 [
@@ -144,25 +144,30 @@ class TipoEstadoAtencionController extends Controller
 
     public function deleteTipoEstadoAtencion(Request $request, $id_tipo){
 
-        try {
-            $tipoEstadoAtencion = TipoEstadoAtencion::findOrFail($id_tipo);
-            $tipoEstadoAtencion->delete();
 
-            return response()->json([
-                'message' => 'Tipo de estado de atención eliminado con éxito'
-            ], 200);
+     try{
 
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => 'El tipo de estado de atención con el ID proporcionado no existe'
-            ], 404);
+        $tipoEstadoAtencion_data = TipoEstadoAtencion::find($id_tipo);
 
-        } catch (\Exception $exceptiondelete) {
-            return response()->json([
-                'error' => 'Error al eliminar el tipo de estado de atención',
-                'message' => $exceptiondelete->getMessage()
-            ], 500);
-        }
+
+       $updateTipoEstadoAtencion = $tipoEstadoAtencion_data->update([
+            'estado'=> 0,
+        ]);
+
+        return response()->json(
+            [
+                'message'=> 'Tipo delete Succeccfully',
+            ],200 );
+
+       }catch(\Exception $exception){
+
+        return response()->json([
+            'error'=> $exception->getMessage(),
+            ],403);
+
+       }
+
+
     }
 
 
@@ -179,25 +184,28 @@ class TipoEstadoAtencionController extends Controller
             ], 403);
         }
 
-        try {
-            $tipoEstadoAtencion = TipoEstadoAtencion::findOrFail($request->id);
-            $tipoEstadoAtencion->delete();
+     try{
 
-            return response()->json([
-                'message' => 'Tipo de estado de atención eliminado con éxito'
-            ], 200);
+        $tipoEstadoAtencion_data = TipoEstadoAtencion::find($request->id);
 
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => 'El tipo de estado de atención con el ID proporcionado no existe'
-            ], 404);
 
-        } catch (\Exception $exceptiondelete) {
-            return response()->json([
-                'error' => 'Error al eliminar el tipo de estado de atención',
-                'message' => $exceptiondelete->getMessage()
-            ], 500);
-        }
+       $updateTipoEstadoAtencion = $tipoEstadoAtencion_data->update([
+            'estado'=> 0,
+        ]);
+
+        return response()->json(
+            [
+                'message'=> 'Tipo delete Succeccfully',
+            ],200 );
+
+       }catch(\Exception $exception){
+
+        return response()->json([
+            'error'=> $exception->getMessage(),
+            ],403);
+
+       }
+
     }
 
 

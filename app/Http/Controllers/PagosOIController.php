@@ -171,25 +171,28 @@ class PagosOIController extends Controller
         ], 403);
     }
 
-    try {
-        $pagosOI = PagosOI::findOrFail($request->id);
-        $pagosOI->delete();
+
+    try{
+
+      $tipoPagosOI_data = PagosOI::find($request->id);
+
+
+       $updatePagosOI = $tipoPagosOI_data->update([
+            'estado' => 0,
+        ]);
+
+        return response()->json(
+            [
+                'message'=> 'Tipo delete Succeccfully',
+            ],200 );
+
+       }catch(\Exception $exception){
 
         return response()->json([
-            'message' => 'Pago eliminado con éxito'
-        ], 200);
+            'error'=> $exception->getMessage(),
+            ],403);
 
-    } catch (ModelNotFoundException $e) {
-        return response()->json([
-            'error' => 'El ID proporcionado no existe en la tabla'
-        ], 404);
-
-    } catch (\Exception $exceptiondelete) {
-        return response()->json([
-            'error' => 'Error al eliminar el pago',
-            'message' => $exceptiondelete->getMessage()
-        ], 500);
-    }
+       }
 }
 
 
@@ -210,7 +213,7 @@ public function allPagosOI(Request $request)
 
     try {
         // Obtener los pagos de la empresa especificada con relaciones si las hay
-        $itemsPagosOI = PagosOI::where('id_empresa', $request->id_empresa)->where('id_obra_impuesto', $request->id_obra_impuesto)->with(['tipoGasto:id,name', 'estadoReembolso:id,name'])->get();
+        $itemsPagosOI = PagosOI::where('id_empresa', $request->id_empresa)->where('id_obra_impuesto', $request->id_obra_impuesto)->where('estado', 1)->with(['tipoGasto:id,name', 'estadoReembolso:id,name'])->get();
 
         return response()->json([
             'success' => true,

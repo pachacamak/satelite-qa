@@ -116,25 +116,28 @@ class InformacionFinancistaController extends Controller
         ], 403);
     }
 
-    try {
-        $financista = InformacionFinancista::findOrFail($request->id);
-        $financista->delete();
+    try{
+
+        $tipoFinancista_data = InformacionFinancista::find($request->id);
+
+
+       $updateFinancista = $tipoFinancista_data->update([
+            'estado' => 0,
+        ]);
+
+        return response()->json(
+            [
+                'message'=> 'Tipo delete Succeccfully',
+
+            ],200 );
+
+       }catch(\Exception $exception){
 
         return response()->json([
-            'message' => 'Financista eliminado con éxito'
-        ], 200);
+            'error'=> $exception->getMessage(),
+            ],403);
 
-    } catch (ModelNotFoundException $e) {
-        return response()->json([
-            'error' => 'El financista con el ID proporcionado no existe'
-        ], 404);
-
-    } catch (\Exception $exceptiondelete) {
-        return response()->json([
-            'error' => 'Error al eliminar el financista',
-            'message' => $exceptiondelete->getMessage()
-        ], 500);
-    }
+       }
 }
 
 
@@ -155,7 +158,7 @@ public function allInformacionFinancista(Request $request)
 
     try {
         // Obtener los pagos de la empresa especificada con relaciones si las hay
-        $itemsPagosOI = InformacionFinancista::where('id_empresa', $request->id_empresa)->where('id_obra_impuesto', $request->id_obra_impuesto)->with(['tipoFinancista:id,name'])->get();
+        $itemsPagosOI = InformacionFinancista::where('id_empresa', $request->id_empresa)->where('id_obra_impuesto', $request->id_obra_impuesto)->where('estado', 1)->with(['tipoFinancista:id,name'])->get();
 
         return response()->json([
             'success' => true,
