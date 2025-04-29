@@ -39,6 +39,10 @@ class ObraporImpuesto extends Model
         return $this->belongsTo(AtencionEstados::class, 'estado_id');
     }
 
+    public function estados() {
+
+        return $this->belongsTo(AtencionEstados::class, 'estado_id');
+    }
 
     public function pagos()
 {

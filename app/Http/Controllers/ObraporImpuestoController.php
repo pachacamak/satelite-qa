@@ -476,7 +476,7 @@ public function allObraporImpuestoCo(Request $request)
         $query = ObraporImpuesto::where('id_empresa', $request->id_empresa)
             ->where('estado', 1)
             ->with([
-                'estado:id,name',
+                'estados:id,name',
                 'tipo:id,name',
             ])
             ->withSum('pagos', 'monto_pagado')           // Suma total de todos los pagos
@@ -532,7 +532,7 @@ public function allObraporImpuestoCo(Request $request)
                 'tipo_id' => $item->tipo?->id ?? null,
                 'tipo_nombre' => $item->tipo?->name ?? null,
                 'estado_id' => $item->estado_id ?? null,
-                'estado_nombre' => $item->estado?->name ?? null,
+                'estado_nombre' => $item->estados?->name ?? null,
                 'costo_proyecto' => $item->costo_proyecto ?? 0,
                 'fecha_conclusion' => $item->fecha_conclusion ?? null,
                 'fecha_reembolso' => $item->fecha_reembolso ?? null,
