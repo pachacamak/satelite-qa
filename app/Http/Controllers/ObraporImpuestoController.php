@@ -531,7 +531,7 @@ public function allObraporImpuestoCo(Request $request)
                 'nombre' => $item->nombre ?? null,
                 'tipo_id' => $item->tipo?->id ?? null,
                 'tipo_nombre' => $item->tipo?->name ?? null,
-                'estado_id' => $item->estado?->id ?? null,
+                'estado_id' => $item->estado_id ?? null,
                 'estado_nombre' => $item->estado?->name ?? null,
                 'costo_proyecto' => $item->costo_proyecto ?? 0,
                 'fecha_conclusion' => $item->fecha_conclusion ?? null,
