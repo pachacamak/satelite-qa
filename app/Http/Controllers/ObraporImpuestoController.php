@@ -459,7 +459,7 @@ public function editObraporImpuestoEstado(Request $request)
 
 public function allObraporImpuestoCo(Request $request)
 {
-    $validated = Validator::make($request->query(), [
+    $validated = Validator::make($request->all(), [
         'id_empresa' => 'required|integer',
         'centros_operacion' => 'nullable|array',
         'centros_operacion.*' => 'required|integer',
@@ -473,7 +473,7 @@ public function allObraporImpuestoCo(Request $request)
     }
 
     try {
-        $query = ObraporImpuesto::where('id_empresa', $request->query('id_empresa'))
+        $query = ObraporImpuesto::where('id_empresa', $request->id_empresa)
             ->where('estado', 1)
             ->with([
                 'estados:id,name',
@@ -482,7 +482,7 @@ public function allObraporImpuestoCo(Request $request)
             ->withSum('pagos', 'monto_pagado')           // Suma total de todos los pagos
             ->withSum('pagosTipoGasto1', 'monto_pagado'); // Suma de pagos donde id_tipo_gasto = 1
 
-        $modo = $request->query('modo', 'A'); // Por defecto "A" (AND)
+        $modo = $request->modo ?? 'A'; // Por defecto "A" (AND)
 
         $hasCentros = $request->filled('centros_operacion');
         $hasUnidades = $request->filled('unidades_gestion');
@@ -490,33 +490,33 @@ public function allObraporImpuestoCo(Request $request)
         if ($hasCentros && $hasUnidades) {
             if ($modo === 'A') {
                 $query->where(function ($q) use ($request) {
-                    foreach ($request->query('centros_operacion') as $centroId) {
+                    foreach ($request->centros_operacion as $centroId) {
                         $q->whereJsonContains('centros_operacion', ['id' => $centroId]);
                     }
                 })->where(function ($q) use ($request) {
-                    foreach ($request->query('unidades_gestion') as $unidadId) {
+                    foreach ($request->unidades_gestion as $unidadId) {
                         $q->whereJsonContains('unidades_gestion', ['id' => $unidadId]);
                     }
                 });
             } else {
                 $query->where(function ($q) use ($request) {
-                    foreach ($request->query('centros_operacion')  as $centroId) {
+                    foreach ($request->centros_operacion as $centroId) {
                         $q->orWhereJsonContains('centros_operacion', ['id' => $centroId]);
                     }
-                    foreach ($request->query('unidades_gestion') as $unidadId) {
+                    foreach ($request->unidades_gestion as $unidadId) {
                         $q->orWhereJsonContains('unidades_gestion', ['id' => $unidadId]);
                     }
                 });
             }
         } elseif ($hasCentros) {
             $query->where(function ($q) use ($request) {
-                foreach ($request->query('centros_operacion') as $centroId) {
+                foreach ($request->centros_operacion as $centroId) {
                     $q->orWhereJsonContains('centros_operacion', ['id' => $centroId]);
                 }
             });
         } elseif ($hasUnidades) {
             $query->where(function ($q) use ($request) {
-                foreach ($request->query('unidades_gestion') as $unidadId) {
+                foreach ($request->unidades_gestion as $unidadId) {
                     $q->orWhereJsonContains('unidades_gestion', ['id' => $unidadId]);
                 }
             });
