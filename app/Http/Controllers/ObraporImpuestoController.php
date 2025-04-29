@@ -556,6 +556,7 @@ public function allObraporImpuestoCo1(Request $request)
     }
 }
 
+
 public function allObraporImpuestoCo(Request $request)
 {
     $validated = Validator::make($request->query(), [
@@ -564,7 +565,7 @@ public function allObraporImpuestoCo(Request $request)
         'centros_operacion.*' => 'required|integer',
         'unidades_gestion' => 'nullable|array',
         'unidades_gestion.*' => 'required|integer',
-        'modo' => 'nullable|string|in:A,O', // "A" (AND) o "O" (OR)
+        'modo' => 'nullable|string|in:A,O',
     ]);
 
     if ($validated->fails()) {
@@ -581,13 +582,18 @@ public function allObraporImpuestoCo(Request $request)
             ->withSum('pagos', 'monto_pagado')
             ->withSum('pagosTipoGasto1', 'monto_pagado');
 
-        $modo = $request->query('modo', 'A'); // Default "A" (AND)
+        $modo = $request->query('modo', 'A');
 
+        // ¡Aquí viene el cambio!
         $centrosOperacion = $request->query('centros_operacion', []);
         $unidadesGestion = $request->query('unidades_gestion', []);
 
-        $hasCentros = is_array($centrosOperacion) && count($centrosOperacion) > 0;
-        $hasUnidades = is_array($unidadesGestion) && count($unidadesGestion) > 0;
+        // Normalizamos manualmente para asegurar que sean arrays de enteros
+        $centrosOperacion = array_map('intval', (array) $centrosOperacion);
+        $unidadesGestion = array_map('intval', (array) $unidadesGestion);
+
+        $hasCentros = count($centrosOperacion) > 0;
+        $hasUnidades = count($unidadesGestion) > 0;
 
         if ($hasCentros || $hasUnidades) {
             if ($hasCentros && $hasUnidades) {
@@ -625,7 +631,6 @@ public function allObraporImpuestoCo(Request $request)
                 });
             }
         }
-        // Si NO envían centros_operacion NI unidades_gestion => No agregamos filtros extra
 
         $itemsObraporImpuesto = $query->get();
 
@@ -659,6 +664,7 @@ public function allObraporImpuestoCo(Request $request)
         ], 403);
     }
 }
+
 
 
     public function deleteObraporImpuesto(Request $request)
