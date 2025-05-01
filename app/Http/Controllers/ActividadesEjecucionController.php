@@ -15,7 +15,7 @@ class ActividadesEjecucionController extends Controller
             'secuencia_id'=>'required|integer',
             'name' => 'required|string|max:255',
             'fecha' => 'required|date',
-            'comentarios' => 'required|string',
+            'comentarios' => 'string',
             'atencion_estado_id' => 'required|exists:atencion_estados,id',
             'tipo_estado_ejecucion_id'=>'required|exists:estado_etapa_ejecucions,id',
             'responsables' => 'required|nullable|array',
